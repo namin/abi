@@ -1,0 +1,51 @@
+(load "match.ss")
+(load "test-check.ss")
+(load "abi.ss")
+
+(eg (Ds-zero? 0) #t)
+(eg (Ds-zero? 1) #f)
+(eg (Ds-zero? 'bottom) 'bottom)
+(eg (Ds-zero? 'top) 'top)
+
+(eg (Ds-plus 0 1) 1)
+(eg (Ds-plus -1 0) -1)
+(eg (Ds-plus -1 1) 'top)
+(eg (Ds-plus 1 1) 1)
+
+(eg (Ds-minus 0 1) -1)
+(eg (Ds-minus -1 0) -1)
+(eg (Ds-minus -1 1) -1)
+(eg (Ds-minus 1 1) 'top)
+
+(eg (Ds-times 0 1) 0)
+(eg (Ds-times -1 0) 0)
+(eg (Ds-times -1 1) -1)
+(eg (Ds-times 1 1) 1)
+
+
+(eg (Ds-eval 1 '()) 1)
+(eg (Ds-eval 10 '()) 1)
+(eg (Ds-eval '(zero? 0) '()) #t)
+(eg (Ds-eval '(zero? 1) '()) #f)
+(eg (Ds-eval '(+ 1 0) '()) 1)
+(eg (Ds-eval '(+ 1 10) '()) 1)
+(eg (Ds-eval '(+ 1 -10) '()) 'top)
+(eg (Ds-eval '(if (zero? 0) 1 -10) '()) 'top)
+(eg (Ds-eval '(if (zero? 0) 1 3) '()) 1)
+(eg (Ds-eval '(lambda (x) (+ x 1)) '()) '(hov ((closure (x) (+ x 1) ()))))
+(eg (Ds-eval '((lambda (x) (+ x 1)) 0) '()) 1)
+(eg (Ds-eval '((lambda (x) (+ x 1)) -1) '()) 'top)
+(define y
+  '(lambda (fun)
+     ((lambda (F)
+        (F F))
+      (lambda (F)
+        (fun (lambda (x) ((F F) x)))))))
+(define fact
+  '(lambda (fact)
+     (lambda (n)
+       (if (zero? n) 1 (* n (fact (- n 1)))))))
+(eg (Ds-eval y '()) `(hov ((closure ,(cadr y) ,(caddr y) ()))))
+(eg (Ds-eval `((,y ,fact) 2) '()) 1)
+(eg (Ds-eval `((,y ,fact) -2) '()) 'top)
+

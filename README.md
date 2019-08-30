@@ -2,7 +2,7 @@
 
 The code follows the 2003 tutorial by Daniel P. Friedman and Anurag Mendhekar
 on _Using an Abstracted Interpreter to Understand Abstract Interpretation_
-([PDF](http://web.archive.org/web/20160528185117/https://cs.indiana.edu/l/www/classes/b621/abiall.pdf)).
+([PDF](http://web.archive.org/web/20160913163222/http://www.cs.indiana.edu/l/www/classes/b621/abiall.pdf)).
 
 A 2017 paper following a similar but more principled approach is
 _Abstracting Definitional Interpreters_ by Darais et al.
